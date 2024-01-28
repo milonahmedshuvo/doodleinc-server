@@ -25,7 +25,7 @@ async function run() {
   try {
     
     const blogCollection = client.db("blogdoodleinc-database").collection("blogs")
-
+    const commentCollection = client.db("blogdoodleinc-database").collection("comments")
     app.post("/blogpost", async (req, res) => {
         const blog = req.body
         const blogpostFromDatabase = await blogCollection.insertOne(blog)
@@ -47,6 +47,12 @@ async function run() {
     })
 
 
+
+    app.post("/commentpost", async (req, res) => {
+        const comment = req.body
+        const commentpost = await commentCollection.insertOne(comment)
+        res.send(commentpost)
+    })
 
 
 
