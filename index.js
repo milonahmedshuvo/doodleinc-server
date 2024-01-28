@@ -32,12 +32,17 @@ async function run() {
         res.send(blogpostFromDatabase)
     })
     
+    app.get("/blogs", async (req, res) => {
+        const query = {}
+        const allblogs = await blogCollection.find(query).toArray()
+        res.send(allblogs)
+    })
 
 
 
 
 
-    
+
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
