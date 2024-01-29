@@ -68,6 +68,24 @@ async function run() {
         res.send(commentDelete)
     })
 
+    app.patch("/commentUpdate/:id", async (req, res) => {
+        const id = req.params.id 
+        const query = {_id: new ObjectId(id)}
+
+        const body = req.body
+        const updatedoc = {
+          $set: {
+            name: body.name,
+            email: body.email,
+            body: body.comment
+          }
+        }
+
+        
+        const updatecomment = await commentCollection.updateOne(query, updatedoc)
+        res.send(updatecomment)
+    })
+
 
 
     // blog manage update and delete 
@@ -76,6 +94,25 @@ async function run() {
       const query = { _id: new ObjectId(id)}
       const blogDelete = await blogCollection.deleteOne(query)
       res.send(blogDelete)
+    })
+
+
+    // blog update 
+    app.patch("/blogupdate/:id", async (req, res ) => {
+        const id = req.params.id
+        const query = {_id: new ObjectId(id)}
+        const body = req.body
+        const updatedoc = {
+          $set: {
+            title: body.title,
+           body: body.description
+          }
+           
+        }
+        console.log(updatedoc)
+
+        const blogupdate = await blogCollection.updateOne(query, updatedoc)
+        res.send(blogupdate)
     })
 
 
