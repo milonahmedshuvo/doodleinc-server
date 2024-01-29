@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -54,8 +54,29 @@ async function run() {
         res.send(commentpost)
     })
 
+    app.get("/comment/:id", async (req, res) => {
+        const blogId = parseInt(req.params.id);
+        const comments = await commentCollection.find({}).toArray()
+        const comment = comments.filter((comment) => comment.blogId === blogId)
+        res.send(comment)
+    })
+
+    app.delete("/commentDelete/:id", async (req, res) => {
+        const id = req.params.id
+        const query = { _id: new ObjectId(id)}
+        const commentDelete = await commentCollection.deleteOne(query)
+        res.send(commentDelete)
+    })
 
 
+
+    // blog manage update and delete 
+    app.delete("/blogDelete/:id", async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id)}
+      const blogDelete = await blogCollection.deleteOne(query)
+      res.send(blogDelete)
+    })
 
 
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
